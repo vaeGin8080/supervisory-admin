@@ -29,6 +29,7 @@ router.get("/", function (req, res, next) {
         status: 0,
         message: "操作失败",
       });
+      return;
     });
 });
 
