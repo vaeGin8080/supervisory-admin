@@ -2,13 +2,15 @@ var express = require("express");
 var router = express.Router();
 var request = require("request");
 var Email = require("../../utils/email");
+const { timeout } = require("../../utils/config");
+
 var sendUrl = [];
 var timer = null;
 function clear() {
   timer = setTimeout(() => {
     console.log("清除url");
     sendUrl = [];
-  }, 100000);
+  }, timeout);
 }
 
 router.post("/", function (req, res, next) {

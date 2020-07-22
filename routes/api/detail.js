@@ -7,7 +7,7 @@ var sql = require("../../utils/sql");
 router.get("/", function (req, res, next) {
   let id = req.query.id;
   if (!id) {
-    res.status(500).json({ message: "请携带id", code: "500", status: 0 });
+    res.status(200).json({ message: "请携带id", code: "500", status: 0 });
     return;
   }
 

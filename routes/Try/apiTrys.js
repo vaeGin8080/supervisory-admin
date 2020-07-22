@@ -2,13 +2,15 @@ var express = require("express");
 var router = express.Router();
 var request = require("request");
 var Email = require("../../utils/email");
+const { timeout } = require("../../utils/config");
+
 var sendUrl = [];
 var timer = null;
 function clear() {
   timer = setTimeout(() => {
     console.log("清除url");
     sendUrl = [];
-  }, 100000);
+  }, timeout);
 }
 
 router.post("/", function (req, res, next) {
@@ -26,6 +28,7 @@ router.post("/", function (req, res, next) {
   console.log("body: " + params);
   request(query, (err, response, body) => {
     if (err) {
+      console.log(sendUrl);
       if (sendUrl.includes(url)) {
         console.log("已经发送过了");
       } else {
