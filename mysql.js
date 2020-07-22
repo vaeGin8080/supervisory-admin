@@ -8,6 +8,7 @@ var connection = mysql.createConnection({
 
 // sql 命令
 const url_list = "url_list";
+const api_list = "api_list";
 
 // sql 语句
 let sql = (sql, callback) => {
@@ -18,6 +19,7 @@ let sqlParams = (sql, post, callback) => {
 };
 module.exports = {
   url_list: url_list,
+  api_list: api_list,
   sql,
   sqlParams,
 };

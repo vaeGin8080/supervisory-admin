@@ -13,7 +13,17 @@ var urlDetail = require("./url/detail");
 /**
  * 测试网站连通性
  *  */
-var trys = require("./trys");
+var trys = require("./Try/trys");
+var apiTrys = require("./Try/apiTrys");
+
+/**
+ * api的增删改查
+ *  */
+var apiList = require("./api/list");
+var apiInsert = require("./api/insert");
+var apiRemove = require("./api/remove");
+var apiUpdate = require("./api/update");
+var apiDetail = require("./api/detail");
 
 const routerMap = [
   ["/", user],
@@ -23,6 +33,12 @@ const routerMap = [
   ["/remove", urlRemove],
   ["/detail", urlDetail],
   ["/trys", trys],
+  ["/apiTrys", apiTrys],
+  ["/apiList", apiList],
+  ["/apiInsert", apiInsert],
+  ["/apiRemove", apiRemove],
+  ["/apiUpdate", apiUpdate],
+  ["/apiDetail", apiDetail],
 ];
 
 let router = (app) => {

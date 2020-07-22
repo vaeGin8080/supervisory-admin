@@ -10,15 +10,15 @@ var mysql = require("../mysql");
  * pageSize 请求的数量 默认为10
  * title 查询参数，按title查询
  *  */
-function query(req) {
+function query(table, req) {
   let page = req.body.page || 1;
   let pageSize = req.body.pageSize || 10;
   let title = req.body.title || "";
   let titleSql = ` where title like '%${title}%'`;
-  var sql = `select id,url,title,createTime,updateTime from ${mysql.url_list} ${
+  var sql = `select * from ${table} ${
     title ? titleSql : ""
   } limit ${pageSize} offset ${(page - 1) * pageSize}`;
-  let all = `select COUNT(id) as total from ${mysql.url_list}`;
+  let all = `select COUNT(id) as total from ${table}`;
   return new Promise((resolve, reject) => {
     mysql.sql(sql, function (err, result) {
       if (err) {
@@ -51,16 +51,10 @@ function query(req) {
 /**
  * 接受参数为url，title
  *  */
-function insert(req) {
-  let { url, title } = req.body;
-  let post = {
-    url,
-    title,
-    createTime: new Date().getTime(),
-  };
-  var sql = `insert into ${mysql.url_list} set ?`;
+function insert(table, query) {
+  var sql = `insert into ${table} set ?`;
   return new Promise((resolve, reject) => {
-    mysql.sqlParams(sql, post, function (err, result) {
+    mysql.sqlParams(sql, query, function (err, result) {
       if (err) {
         console.log("[SELECT ERROR] - ", err.message);
         reject();
@@ -75,9 +69,8 @@ function insert(req) {
 /**
  * 传入参数 id
  * */
-function remove(req) {
-  let id = req.query.id;
-  var sql = `delete FROM ${mysql.url_list} where id =${id}`;
+function remove(table, id) {
+  var sql = `delete FROM ${table} where id =${id}`;
   return new Promise((resolve, reject) => {
     mysql.sql(sql, function (err, result) {
       if (err) {
@@ -94,17 +87,10 @@ function remove(req) {
 /**
  * 传入参数 id，url，title
  *  */
-function update(req) {
-  let { id, url, title } = req.body;
-  let post = {
-    id,
-    url,
-    title,
-    updateTime: new Date().getTime(),
-  };
-  var sql = `update ${mysql.url_list} set ? where id = ${id}`;
+function update(table, query) {
+  var sql = `update ${table} set ? where id = ${query.id}`;
   return new Promise((resolve, reject) => {
-    mysql.sqlParams(sql, post, function (err, result) {
+    mysql.sqlParams(sql, query, function (err, result) {
       if (err) {
         console.log("[SELECT ERROR] - ", err.message);
         reject();
@@ -120,9 +106,8 @@ function update(req) {
 /**
  * 传入参数 id
  *  */
-function detail(req) {
-  let id = req.query.id;
-  var sql = `select id,url,title,createTime,updateTime FROM ${mysql.url_list} where id =${id}`;
+function detail(table, id) {
+  var sql = `select * FROM ${table} where id =${id}`;
   return new Promise((resolve, reject) => {
     mysql.sql(sql, function (err, result) {
       if (err) {
@@ -145,4 +130,5 @@ module.exports = {
   update,
   remove,
   detail,
+  mysql,
 };

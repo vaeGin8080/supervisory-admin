@@ -6,7 +6,7 @@ var sql = require("../../utils/sql");
 /* GET users listing. */
 router.post("/", function (req, res, next) {
   sql
-    .query(sql.mysql.url_list, req)
+    .query(sql.mysql.api_list, req)
     .then((result) => {
       res.status(200).json({
         code: "200",

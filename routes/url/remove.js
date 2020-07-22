@@ -5,17 +5,13 @@ var sql = require("../../utils/sql");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  console.log("--------------res");
-  console.log(res);
-  console.log("--------------res");
-
   let id = req.query.id;
   if (!id) {
-    res.status(500).json({ msg: "请携带id", code: "500", status: 0 });
+    res.status(200).json({ message: "请携带id", code: "500", status: 0 });
     return;
   }
   sql
-    .remove(req)
+    .remove(sql.mysql.url_list, id)
     .then((result) => {
       res.status(200).json({
         code: "200",

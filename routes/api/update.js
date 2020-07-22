@@ -4,20 +4,30 @@ var router = express.Router();
 var sql = require("../../utils/sql");
 
 /* GET users listing. */
-router.get("/", function (req, res, next) {
-  let id = req.query.id;
+router.post("/", function (req, res, next) {
+  let { id, url, title, methods, headers, params, urlId, email } = req.body;
   if (!id) {
     res.status(200).json({ message: "请携带id", code: "500", status: 0 });
     return;
   }
-
+  let query = {
+    id,
+    url,
+    title,
+    methods,
+    email,
+    headers: typeof headers == "string" ? headers : JSON.stringify(headers),
+    params: typeof params == "string" ? params : JSON.stringify(params),
+    urlId,
+    updateTime: new Date().getTime(),
+  };
+  console.log(query);
   sql
-    .detail(sql.mysql.url_list, id)
+    .update(sql.mysql.api_list, query)
     .then((result) => {
       res.status(200).json({
         code: "200",
-        data: result,
-        message: "请求成功",
+        message: "更改成功",
         status: 1,
       });
     })

@@ -1,16 +1,23 @@
-// 获取列表
+// 添加数据
 var express = require("express");
 var router = express.Router();
 var sql = require("../../utils/sql");
 
 /* GET users listing. */
-router.post("/", function (req, res, next) {
+router.get("/", function (req, res, next) {
+  let id = req.query.id;
+  if (!id) {
+    res.status(500).json({ message: "请携带id", code: "500", status: 0 });
+    return;
+  }
+
   sql
-    .query(sql.mysql.url_list, req)
+    .detail(sql.mysql.api_list, id)
     .then((result) => {
       res.status(200).json({
         code: "200",
         data: result,
+        message: "请求成功",
         status: 1,
       });
     })

@@ -5,8 +5,15 @@ var sql = require("../../utils/sql");
 
 /* GET users listing. */
 router.post("/", function (req, res, next) {
+  let { url, title, email } = req.body;
+  let post = {
+    url,
+    title,
+    email,
+    createTime: new Date().getTime(),
+  };
   sql
-    .insert(req)
+    .insert(sql.mysql.url_list, post)
     .then((result) => {
       res.status(200).json({
         code: "200",

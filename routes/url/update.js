@@ -5,8 +5,20 @@ var sql = require("../../utils/sql");
 
 /* GET users listing. */
 router.post("/", function (req, res, next) {
+  let { id, url, title, email } = req.body;
+  if (!id) {
+    res.status(200).json({ message: "请携带id", code: "500", status: 0 });
+    return;
+  }
+  let query = {
+    id,
+    url,
+    title,
+    email,
+    updateTime: new Date().getTime(),
+  };
   sql
-    .update(req)
+    .update(sql.mysql.url_list, query)
     .then((result) => {
       res.status(200).json({
         code: "200",
