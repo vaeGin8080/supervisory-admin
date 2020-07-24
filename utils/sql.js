@@ -10,12 +10,13 @@ var mysql = require("../mysql");
  * pageSize 请求的数量 默认为10
  * title 查询参数，按title查询
  *  */
-function query(table, req) {
+function query(table, req, form) {
   let page = req.body.page || 1;
   let pageSize = req.body.pageSize || 10;
   let title = req.body.title || "";
   let titleSql = ` where title like '%${title}%'`;
-  var sql = `select * from ${table} ${
+  let querySql = form || "*";
+  var sql = `select ${querySql} from ${table} ${
     title ? titleSql : ""
   } limit ${pageSize} offset ${(page - 1) * pageSize}`;
   let all = `select COUNT(id) as total from ${table}`;
@@ -77,7 +78,11 @@ function remove(table, id) {
         console.log("[SELECT ERROR] - ", err.message);
         reject();
       } else {
-        resolve();
+        if (result.length > 0) {
+          resolve();
+        } else {
+          reject();
+        }
       }
     });
   });
@@ -106,8 +111,10 @@ function update(table, query) {
 /**
  * 传入参数 id
  *  */
-function detail(table, id) {
-  var sql = `select * FROM ${table} where id =${id}`;
+function detail(table, id, form) {
+  let querySql = form || "*";
+
+  var sql = `select ${querySql} FROM ${table} where id =${id}`;
   return new Promise((resolve, reject) => {
     mysql.sql(sql, function (err, result) {
       if (err) {

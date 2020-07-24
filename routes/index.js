@@ -25,6 +25,20 @@ var apiRemove = require("./api/remove");
 var apiUpdate = require("./api/update");
 var apiDetail = require("./api/detail");
 
+/**
+ * 用户管理
+ *  */
+var userList = require("./user/list");
+var userUpdate = require("./user/update");
+var userRemove = require("./user/remove");
+var userDetail = require("./user/detail");
+
+/**
+ * 注册、登录
+ *  */
+var register = require("./login/register");
+var login = require("./login/login");
+
 const routerMap = [
   ["/", user],
   ["/list", urlList],
@@ -39,6 +53,13 @@ const routerMap = [
   ["/apiRemove", apiRemove],
   ["/apiUpdate", apiUpdate],
   ["/apiDetail", apiDetail],
+  ["/apiDetail", apiDetail],
+  ["/register", register],
+  ["/login", login],
+  ["/userList", userList],
+  ["/userUpdate", userUpdate],
+  ["/userRemove", userRemove],
+  ["/userDetail", userDetail],
 ];
 
 let router = (app) => {

@@ -5,14 +5,13 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser"); //用于req.body获取值的
 var app = express();
-var router = require("./routes/index");
 
 //设置允许跨域访问该服务.
 app.all("*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "*");
   res.header("Access-Control-Allow-Methods", "*");
-  res.header("Access-Control-Allow-Credentials", "true");
+  console.log(req.headers);
   next();
 });
 // app.use(bodyParser.json()); // for parsing application/json
@@ -21,8 +20,6 @@ app.use(
     extended: true,
   })
 ); // for parsing application/x-www-form-urlencoded
-
-var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -33,6 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+var router = require("./routes/index");
 
 // 路由注册
 router(app);
