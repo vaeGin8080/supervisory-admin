@@ -23,9 +23,8 @@ router.post("/", function (req, res, next) {
   };
   let startDate = new Date().getTime();
   console.log("startDate: " + startDate);
-  console.log("url: " + url);
-  console.log("method: " + methods);
-  console.log("body: " + params);
+  // console.log("url: " + url);
+  // console.log("method: " + methods);
   request(query, (err, response, body) => {
     if (err) {
       console.log(sendUrl);
@@ -49,7 +48,6 @@ router.post("/", function (req, res, next) {
           }
         );
       }
-
       res.json({
         code: "500",
         status: 0,
@@ -67,19 +65,30 @@ router.post("/", function (req, res, next) {
       }
       return;
     }
-    let endDate = new Date().getTime();
-    console.log("endDate: " + endDate);
-    let delayTime = endDate - startDate;
-    console.log("delayTime: " + delayTime);
-    res.json({
-      code: "200",
-      status: 1,
-      data: {
-        msg: "连接成功",
-        delayTime: delayTime,
-        unit: "ms",
-      },
-    });
+    if (response.statusCode == 200) {
+      let endDate = new Date().getTime();
+      console.log("endDate: " + endDate);
+      let delayTime = endDate - startDate;
+      console.log("delayTime: " + delayTime);
+      res.json({
+        code: "200",
+        status: 1,
+        data: {
+          msg: "连接成功",
+          delayTime: delayTime,
+          unit: "ms",
+        },
+      });
+    } else {
+      res.json({
+        code: "500",
+        status: 0,
+        data: {
+          msg: "连接失败",
+          delayTime: 0,
+        },
+      });
+    }
   });
 });
 
